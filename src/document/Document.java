@@ -67,7 +67,24 @@ public abstract class Document {
 		// TODO: Implement this method so that you can call it from the 
 	    // getNumSyllables method in BasicDocument (module 2) and 
 	    // EfficientDocument (module 3).
-	    return 0;
+		int num = 0;
+		char[] charray = word.toCharArray();
+		String vowels = "aeiouy";
+		boolean flag = true;
+		
+		for(int i = 0; i < charray.length; i++ ) {
+			if(i == charray.length-1 && flag && Character.toLowerCase(charray[i]) == 'e' && num > 0) {
+				num--;
+			}
+			if(flag && vowels.indexOf(Character.toLowerCase(charray[i])) >= 0) {
+				flag = false;
+				num++;
+			}
+			else if(vowels.indexOf(Character.toLowerCase(charray[i])) < 0) {
+				flag = true;
+			}
+		}
+	    return num;
 	}
 	
 	/** A method for testing
@@ -132,7 +149,20 @@ public abstract class Document {
 	{
 	    // TODO: You will play with this method in week 1, and 
 		// then implement it in week 2
-	    return 0.0;
+//		double wordCount = (double)getNumWords();
+//		return 206.835 - (1.015 * ((wordCount)/getNumSentences())) 
+//				- (84.6 * (((double)getNumSyllables())/wordCount));
+		
+		double wordc = (double)getNumWords();
+		double sentencesc = (double)getNumSentences();
+		double syllablec = (double)getNumSyllables();
+		
+		double wps = wordc/sentencesc;
+		double spw = syllablec/wordc;
+		
+		double fleschsc = 206.835 - (1.015*wps) - (84.6*spw);
+		
+		return fleschsc;
 	}
 	
 	
