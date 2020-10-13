@@ -5,7 +5,7 @@ package spelling;
 
 import static org.junit.Assert.*;
 
-import java.util.LinkedList;
+
 
 import org.junit.Before;
 import org.junit.Test;

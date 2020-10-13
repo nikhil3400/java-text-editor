@@ -40,7 +40,25 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	public boolean addWord(String word)
 	{
 	    //TODO: Implement this method.
-	    return false;
+		word = word.toLowerCase();
+		TrieNode current = this.root;
+		char[] charray = word.toCharArray();
+		
+		for(char ch: charray) {
+			if(current.getValidNextCharacters().contains(ch)) {
+				current = current.getChild(ch);
+			}
+			else {
+				current = current.insert(ch);
+			}
+		}
+		
+		if (!current.endsWord()) {
+			current.setEndsWord(true);
+			size++;
+			return true;
+		}
+		return false;
 	}
 	
 	/** 
@@ -50,7 +68,7 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	public int size()
 	{
 	    //TODO: Implement this method
-	    return 0;
+	    return this.size;
 	}
 	
 	
@@ -60,7 +78,15 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	public boolean isWord(String s) 
 	{
 	    // TODO: Implement this method
-		return false;
+		s = s.toLowerCase();
+		TrieNode node = root;
+		for (char c : s.toCharArray()) {
+			if (node.getChild(c) == null) {
+				return false;
+			}
+			node = node.getChild(c);
+		}
+		return node.endsWord();
 	}
 
 	/** 
@@ -100,8 +126,30 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
     	 //       If it is a word, add it to the completions list
     	 //       Add all of its child nodes to the back of the queue
     	 // Return the list of completions
+    	 LinkedList<TrieNode> nodeQueue = new LinkedList<TrieNode>();
+    	 List<String> completions = new LinkedList<String>();
+    	 TrieNode node = root;
+    	 prefix = prefix.toLowerCase();
+    	 for (char c : prefix.toCharArray()) {
+    		 node = node.getChild(c);
+    		 if (node == null) {
+    			 return completions;
+    		 }
+    	 }
+    	 nodeQueue.add(node);
     	 
-         return null;
+    	 while (!nodeQueue.isEmpty() && completions.size() < numCompletions) {
+    		 node = nodeQueue.remove();
+    		 if (node.endsWord()) {
+    			 completions.add(node.getText());
+    		 }
+    		 
+    		 Set<Character> children = node.getValidNextCharacters();
+    		 for (char c : children) {
+    			 nodeQueue.add(node.getChild(c));
+    		 }
+    	 }
+    	 return completions;
      }
 
  	// For debugging
