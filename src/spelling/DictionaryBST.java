@@ -24,6 +24,7 @@ public class DictionaryBST implements Dictionary
      * (it wasn't already there). */
     public boolean addWord(String word) {
     	// TODO: Implement this method
+
     	word = word.toLowerCase();
     	if(!isWord(word)) {
     		this.dict.add(word);
@@ -37,12 +38,14 @@ public class DictionaryBST implements Dictionary
     public int size()
     {
     	// TODO: Implement this method
+
         return this.dict.size();
     }
 
     /** Is this a word according to this dictionary? */
     public boolean isWord(String s) {
     	//TODO: Implement this method
+    	
     	if(this.dict.contains(s.toLowerCase())) {
     		return true;
     	}
